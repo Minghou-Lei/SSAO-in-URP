@@ -82,7 +82,7 @@ MonoBehaviour:
     max: 32
   _SampleKernelRadius:
     m_OverrideState: 1
-    m_Value: 0.3
+    m_Value: 3
     min: 0
     max: 3
   _BilaterFilterFactor:
@@ -97,12 +97,12 @@ MonoBehaviour:
     max: 4
   _Bias:
     m_OverrideState: 1
-    m_Value: 0.00005
+    m_Value: 0.00007
     min: 0
     max: 0.0001
   _Strength:
     m_OverrideState: 1
-    m_Value: 50
+    m_Value: 464
     min: 0
     max: 500
   _NoiseTex:

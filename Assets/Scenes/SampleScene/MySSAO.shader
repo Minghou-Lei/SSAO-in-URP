@@ -18,7 +18,7 @@
 		float4 vertex : SV_POSITION;
 		float3 viewRay : TEXCOORD1;
 	};
-
+	
 	//顶点阶段
 	#define MAX_SAMPLE_POINT_COUNT 64
 	//源画面
@@ -84,8 +84,9 @@
 		//Gramm-Schimidt方法处理创建正交基
 		float3 tangent = normalize(randvec - viewNormal * dot(randvec, viewNormal));
 		float3 bitangent = cross(viewNormal, tangent);
-		//float3x3 TBN = float3x3(tangent, bitangent, viewNormal);
-		float3x3 TBN = float3x3(tangent, viewNormal, bitangent);
+		float3x3 TBN = float3x3(tangent, bitangent, viewNormal);
+		
+		//float3x3 TBN = float3x3(tangent, viewNormal, bitangent);
 
 		int sampleCount = _SamplePointCount;
 		float oc = 0.0;

@@ -14,6 +14,8 @@ public class AdditionPostProcessRendererFeature : ScriptableRendererFeature{
 		
     public override void Create(){
         volume = new MySSAOVolume();
+        volume.renderPassEvent = RenderPassEvent.AfterRendering;
+        volume.m_TemporaryColorTexture01.Init("_ScreenSpaceOcclusionTexture");
     }
 
     public override void AddRenderPasses(ScriptableRenderer renderer, ref RenderingData renderingData){
@@ -34,4 +36,6 @@ public class AdditionPostProcessRendererFeature : ScriptableRendererFeature{
         // 添加该Pass到渲染管线中
         renderer.EnqueuePass(volume);
     }
+    
+    
 }
