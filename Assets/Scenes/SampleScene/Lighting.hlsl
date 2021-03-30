@@ -593,10 +593,6 @@ half4 UniversalFragmentPBR(InputData inputData, half3 albedo, half metallic, hal
     uv.x = screenPos.x;
     uv.y = 1-screenPos.y;
 
-    
-    //float2 screenPos = ComputeScreenPos(TransformWorldToHClip(inputData.positionWS)).xy;
-    //float2 uv = screenPos / _ScreenParams.xy;
-
     float ind = SAMPLE_TEXTURE2D_X(_ScreenSpaceOcclusionTexture, sampler_ScreenSpaceOcclusionTexture, UnityStereoTransformScreenSpaceTex(uv)).y;
     float dir = lerp(1.0,ind,0.7);
     

@@ -15,8 +15,7 @@ public class MySSAOVolume : ScriptableRenderPass
     public float samplePointCount = 32;
     private RenderTextureDescriptor opaqueDesc;
     private RenderTexture AO, blur;
-
-
+    
     public override void Execute(ScriptableRenderContext context, ref RenderingData renderingData)
     {
         var stack = VolumeManager.instance.stack;
@@ -31,12 +30,12 @@ public class MySSAOVolume : ScriptableRenderPass
         CommandBufferPool.Release(cmd);
     }
 
-    public void Setup(RenderTargetIdentifier _ColorAttachment, Material Material)
+    public void Setup(RenderTargetIdentifier _ColorAttachment, Material Material,List<Vector4> sp)
     {
         this.m_ColorAttachment = _ColorAttachment;
         m_Material = Material;
         samplePoint = new List<Vector4>();
-        GenSampleKernal();
+        samplePoint = sp;
     }
 
     void Render(CommandBuffer cmd, ref RenderingData renderingData)

@@ -46,7 +46,37 @@
 
 	float _Height; //屏幕的高
 	float _Width; //屏幕的宽
-	
+
+
+	float4x4 inverse(float4x4 input)
+ {
+     #define minor(a,b,c) determinant(float3x3(input.a, input.b, input.c))
+     //determinant(float3x3(input._22_23_23, input._32_33_34, input._42_43_44))
+     
+     float4x4 cofactors = float4x4(
+          minor(_22_23_24, _32_33_34, _42_43_44), 
+         -minor(_21_23_24, _31_33_34, _41_43_44),
+          minor(_21_22_24, _31_32_34, _41_42_44),
+         -minor(_21_22_23, _31_32_33, _41_42_43),
+         
+         -minor(_12_13_14, _32_33_34, _42_43_44),
+          minor(_11_13_14, _31_33_34, _41_43_44),
+         -minor(_11_12_14, _31_32_34, _41_42_44),
+          minor(_11_12_13, _31_32_33, _41_42_43),
+         
+          minor(_12_13_14, _22_23_24, _42_43_44),
+         -minor(_11_13_14, _21_23_24, _41_43_44),
+          minor(_11_12_14, _21_22_24, _41_42_44),
+         -minor(_11_12_13, _21_22_23, _41_42_43),
+         
+         -minor(_12_13_14, _22_23_24, _32_33_34),
+          minor(_11_13_14, _21_23_24, _31_33_34),
+         -minor(_11_12_14, _21_22_24, _31_32_34),
+          minor(_11_12_13, _21_22_23, _31_32_33)
+     );
+     #undef minor
+     return transpose(cofactors) / determinant(input);
+ }
 
 	//顶点阶段
 	v2f vert_ao(appdata v)
@@ -56,7 +86,9 @@
 		o.uv = v.uv;
 		//获得View Space中点坐标
 		float4 clipPos = float4(v.uv * 2.0 - 1.0, 1.0, 1.0);
-		float4 viewRay = mul(_InverseProjectionMatrix, clipPos);
+		float4x4 m = inverse(unity_CameraProjection);
+		float4 viewRay = mul(m, clipPos);
+		//float4 viewRay = mul(_InverseProjectionMatrix, clipPos);
 		o.viewRay = viewRay.xyz / viewRay.w;
 		return o;
 	}
