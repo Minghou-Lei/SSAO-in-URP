@@ -58,11 +58,11 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
-     <Compile Include="Assets\Scenes\SampleScene\AdditionPostProcessRendererFeature.cs" />
      <Compile Include="Assets\Scenes\SampleScene\DepthNormalsFeature.cs" />
      <Compile Include="Assets\Scenes\SampleScene\MySSAOVolume.cs" />
      <Compile Include="Assets\Scenes\SampleScene\MySSAOVolumeComponent.cs" />
      <Compile Include="Assets\Scenes\SampleScene\OutlineFeature.cs" />
+     <Compile Include="Assets\Scenes\SampleScene\SSAOPostProcessRendererFeature.cs" />
      <Compile Include="Assets\Scripts\SimpleCameraController.cs" />
      <Compile Include="Assets\TutorialInfo\Scripts\Readme.cs" />
      <None Include="Assets\Scenes\SampleScene\Lighting.hlsl" />
