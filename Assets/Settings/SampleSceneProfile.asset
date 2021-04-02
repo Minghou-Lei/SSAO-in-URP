@@ -1,5 +1,52 @@
 %YAML 1.1
 %TAG !u! tag:unity3d.com,2011:
+--- !u!114 &-9194232279005559121
+MonoBehaviour:
+  m_ObjectHideFlags: 3
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d81df8eda1ef08e439bba334775010c2, type: 3}
+  m_Name: MySSAOVolumeComponent
+  m_EditorClassIdentifier: 
+  active: 1
+  m_AdvancedMode: 0
+  _SamplePointCount:
+    m_OverrideState: 1
+    m_Value: 20
+    min: 0
+    max: 32
+  _SampleKernelRadius:
+    m_OverrideState: 1
+    m_Value: 0.035
+    min: 0
+    max: 3
+  _BilaterFilterFactor:
+    m_OverrideState: 1
+    m_Value: 0
+    min: 0
+    max: 0.2
+  _BlurRadius:
+    m_OverrideState: 1
+    m_Value: 0
+    min: 0
+    max: 4
+  _Bias:
+    m_OverrideState: 1
+    m_Value: 0.0000117
+    min: 0
+    max: 0.0001
+  _Strength:
+    m_OverrideState: 1
+    m_Value: 433
+    min: 0
+    max: 500
+  _NoiseTex:
+    m_OverrideState: 1
+    m_Value: {fileID: 2800000, guid: 73bae16d66a7f95419b94bd2ec848f6d, type: 3}
 --- !u!114 &-7893295128165547882
 MonoBehaviour:
   m_ObjectHideFlags: 3
@@ -12,7 +59,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0b2db86121404754db890f4c8dfe81b2, type: 3}
   m_Name: Bloom
   m_EditorClassIdentifier: 
-  active: 0
+  active: 1
   m_AdvancedMode: 0
   threshold:
     m_OverrideState: 1
@@ -59,7 +106,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 899c54efeace73346a0a16faa3afe726, type: 3}
   m_Name: Vignette
   m_EditorClassIdentifier: 
-  active: 0
+  active: 1
   m_AdvancedMode: 0
   color:
     m_OverrideState: 0
@@ -99,7 +146,7 @@ MonoBehaviour:
   - {fileID: 849379129802519247}
   - {fileID: -7893295128165547882}
   - {fileID: -7011558710299706105}
-  - {fileID: 8469088780812528970}
+  - {fileID: -9194232279005559121}
 --- !u!114 &849379129802519247
 MonoBehaviour:
   m_ObjectHideFlags: 3
@@ -112,55 +159,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 97c23e3b12dc18c42a140437e53d3951, type: 3}
   m_Name: Tonemapping
   m_EditorClassIdentifier: 
-  active: 0
+  active: 1
   m_AdvancedMode: 0
   mode:
     m_OverrideState: 1
     m_Value: 2
---- !u!114 &8469088780812528970
-MonoBehaviour:
-  m_ObjectHideFlags: 3
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 0}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: d81df8eda1ef08e439bba334775010c2, type: 3}
-  m_Name: MySSAOVolumeComponent
-  m_EditorClassIdentifier: 
-  active: 1
-  m_AdvancedMode: 0
-  _SamplePointCount:
-    m_OverrideState: 1
-    m_Value: 32
-    min: 0
-    max: 32
-  _SampleKernelRadius:
-    m_OverrideState: 1
-    m_Value: 0.3
-    min: 0
-    max: 3
-  _BilaterFilterFactor:
-    m_OverrideState: 1
-    m_Value: 0.2
-    min: 0
-    max: 0.2
-  _BlurRadius:
-    m_OverrideState: 1
-    m_Value: 4
-    min: 0
-    max: 4
-  _Bias:
-    m_OverrideState: 1
-    m_Value: 0.00005
-    min: 0
-    max: 0.0001
-  _Strength:
-    m_OverrideState: 1
-    m_Value: 500
-    min: 0
-    max: 500
-  _NoiseTex:
-    m_OverrideState: 1
-    m_Value: {fileID: 2800000, guid: 59c8de363dc14c54986d0751c2c38342, type: 3}

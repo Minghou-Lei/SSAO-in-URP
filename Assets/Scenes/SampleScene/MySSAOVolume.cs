@@ -14,7 +14,7 @@ public class MySSAOVolume : ScriptableRenderPass
     public List<Vector4> samplePoint = new List<Vector4>();
     public float samplePointCount = 32;
     private RenderTextureDescriptor opaqueDesc;
-    private RenderTexture AO, blur;
+    private RenderTexture AO, blur,output;
 
     public override void Execute(ScriptableRenderContext context, ref RenderingData renderingData)
     {
@@ -28,6 +28,7 @@ public class MySSAOVolume : ScriptableRenderPass
         Render(cmd, ref renderingData);
         context.ExecuteCommandBuffer(cmd);
         CommandBufferPool.Release(cmd);
+        cmd.Clear();
     }
 
     public void Setup(RenderTargetIdentifier _ColorAttachment, Material Material, List<Vector4> sp)
@@ -44,7 +45,7 @@ public class MySSAOVolume : ScriptableRenderPass
         {
             AO = RenderTexture.GetTemporary(Screen.width, Screen.height, 0);
             blur = RenderTexture.GetTemporary(Screen.width, Screen.height, 0);
-            RenderTexture output = new RenderTexture(Screen.width, Screen.height, 0);
+            output = RenderTexture.GetTemporary(Screen.width, Screen.height, 0);
             cmd.GetTemporaryRT(m_TemporaryColorTexture01.id, opaqueDesc);
             m_Material.SetTexture("_NoiseTex", m_SSAOVolumeComponent._NoiseTex.value);
             m_Material.SetVectorArray("_SamplePointArray", samplePoint.ToArray());
@@ -63,9 +64,10 @@ public class MySSAOVolume : ScriptableRenderPass
             m_Material.SetTexture("_MainTex", blur);
             cmd.Blit(blur, output, m_Material, 1);
             cmd.SetGlobalTexture("_ScreenSpaceOcclusionTexture", output);
-            output.Release();
+            RenderTexture.ReleaseTemporary(output);
             RenderTexture.ReleaseTemporary(blur);
             RenderTexture.ReleaseTemporary(AO);
+
         }
 
         if (renderingData.cameraData.isSceneViewCamera)
@@ -73,7 +75,7 @@ public class MySSAOVolume : ScriptableRenderPass
 
             AO = RenderTexture.GetTemporary(Screen.width, Screen.height, 0);
             blur = RenderTexture.GetTemporary(Screen.width, Screen.height, 0);
-            RenderTexture output = new RenderTexture(Screen.width, Screen.height, 0);
+            output = RenderTexture.GetTemporary(Screen.width, Screen.height, 0);
             cmd.GetTemporaryRT(m_TemporaryColorTexture01.id, opaqueDesc);
             m_Material.SetTexture("_NoiseTex", m_SSAOVolumeComponent._NoiseTex.value);
             m_Material.SetVectorArray("_SamplePointArray", samplePoint.ToArray());
@@ -92,29 +94,13 @@ public class MySSAOVolume : ScriptableRenderPass
             m_Material.SetTexture("_MainTex", blur);
             cmd.Blit(blur, output, m_Material, 1);
             cmd.SetGlobalTexture("_ScreenSpaceOcclusionTexture", output);
-            output.Release();
             RenderTexture.ReleaseTemporary(blur);
             RenderTexture.ReleaseTemporary(AO);
+            RenderTexture.ReleaseTemporary(output);
         }
 
     }
-
-    void GenSampleKernal()
-    {
-        if (samplePointCount == samplePoint.Count)
-            return;
-        samplePoint.Clear();
-        for (int i = 0; i < samplePointCount; ++i)
-        {
-            var vector = new Vector4(Random.Range(-1f, 1f), Random.Range(-1f, 1f), Random.Range(0f, 1f), 1f).normalized;
-            //拟合二次方程
-            var scale = (float) i / samplePointCount;
-            scale = Mathf.Lerp(0.01f, 1f, scale * scale);
-            vector *= scale;
-            samplePoint.Add(vector);
-        }
-    }
-
+    
     public override void FrameCleanup(CommandBuffer cmd)
 
     {

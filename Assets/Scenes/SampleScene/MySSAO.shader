@@ -77,7 +77,6 @@
      #undef minor
      return transpose(cofactors) / determinant(input);
  }
-
 	//顶点阶段
 	v2f vert_ao(appdata v)
 	{
@@ -105,28 +104,44 @@
 		//在深度法线画面上取样
 		float4 cdn = tex2D(_CameraDepthNormalsTexture, i.uv);
 		DecodeDepthNormal(cdn, pPointDepth, viewNormal);
-
+		
 		float3 viewPos = pPointDepth * i.viewRay;
 
 		//铺平纹理
-		float2 noiseScale = float2(_Height, _Width);
+		float2 noiseScale = float2(512,512);
 		float2 noiseUV = float2(i.uv.x * noiseScale.x, i.uv.y * noiseScale.y);
 		//采样噪声贴图
 		float3 randvec = tex2D(_NoiseTex, noiseUV).xyz;
 		//Gramm-Schimidt方法处理创建正交基
 		float3 tangent = normalize(randvec - viewNormal * dot(randvec, viewNormal));
-		float3 bitangent = cross(viewNormal, tangent);
-		float3x3 TBN = float3x3(tangent, bitangent, viewNormal);
-		
-		//float3x3 TBN = float3x3(tangent, viewNormal, bitangent);
+		float3 bitangent = cross(tangent,viewNormal);
+		//float3x3 TBN = float3x3(viewNormal,tangent,bitangent);
+		float3x3 TBN = float3x3(-tangent, viewNormal,bitangent);
 
 		int sampleCount = _SamplePointCount;
 		float oc = 0.0;
+		/*
+		float p = lerp(0,pPointDepth,1);
+
+		if(p > 0.25 && p <= 0.5)
+		{
+			sampleCount /= 1.5;
+		}
+		if(p > 0.5 && p <= 0.75)
+		{
+			sampleCount /= 2;
+		}
+		if(p > 0.75 && p <= 1)
+		{
+			sampleCount /= 3;
+		}
+		*/
+
 		for (int i = 0; i < sampleCount; ++i)
 		{
 			float3 randomVector = mul(_SamplePointArray[i].xyz, TBN);
 			//float3 randomVector = mul(TBN,_SamplePointArray[i].xyz);
-			//randomVector = normalize(randomVector);
+			randomVector = normalize(randomVector);
 			//randomVector = dot(randvec,viewNormal) < 0 ? -randvec : randvec;
 
 			float3 randomPos = viewPos + randomVector * _SampleKernelRadius;

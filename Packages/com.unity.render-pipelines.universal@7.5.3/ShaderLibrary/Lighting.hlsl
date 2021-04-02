@@ -594,12 +594,14 @@ half4 UniversalFragmentPBR(InputData inputData, half3 albedo, half metallic, hal
     uv.y = screenPos.y;
 
     float ind = SAMPLE_TEXTURE2D_X(_ScreenSpaceOcclusionTexture, sampler_ScreenSpaceOcclusionTexture, UnityStereoTransformScreenSpaceTex(uv)).y;
-    float dir = lerp(1.0,ind,0.7);
+    float dir = lerp(1,ind,20);
     
     Light mainLight = GetMainLight(inputData.shadowCoord);
 
     mainLight.color *= dir;
     inputData.bakedGI *= ind;
+    occlusion = min(occlusion,ind);
+    
     
     MixRealtimeAndBakedGI(mainLight, inputData.normalWS, inputData.bakedGI, half4(0, 0, 0, 0));
 
@@ -621,6 +623,7 @@ half4 UniversalFragmentPBR(InputData inputData, half3 albedo, half metallic, hal
     #endif
 
     color += emission;
+    //color *= dir;
     return half4(color, alpha);
 }
 
